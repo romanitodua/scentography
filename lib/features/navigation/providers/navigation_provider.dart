@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:scentography/app.dart';
 
 
 part 'navigation_provider.g.dart';

@@ -1,4 +1,4 @@
-package com.example.scentography
+package com.romanitodua.scentography
 
 import io.flutter.embedding.android.FlutterActivity
 

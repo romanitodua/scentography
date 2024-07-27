@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "455155510976",
+    "project_id": "scentography-33051",
+    "storage_bucket": "scentography-33051.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455155510976:android:ea3fe37e3dfd386fb6c725",
+        "android_client_info": {
+          "package_name": "com.romanitodua.scentography"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVFHzsMtd9MCt6sX4uJqfLYFHC4uW_mGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

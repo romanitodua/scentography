@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../../app.dart';
+import '../../home_page/screens/home_screen.dart';
 import '../providers/navigation_provider.dart';
 
 class SNavigation extends ConsumerWidget {
@@ -19,11 +21,18 @@ class SNavigation extends ConsumerWidget {
         },
         destinations: const [
           NavigationDestination(icon: Icon(Iconsax.home), label: "Home"),
-          NavigationDestination(icon: Icon(Icons.library_books), label: "Library"),
-          NavigationDestination(icon: Icon(Icons.computer), label: "Consultant"),
+          NavigationDestination(
+              icon: Icon(Icons.library_books), label: "Library"),
+          NavigationDestination(
+              icon: Icon(Icons.computer), label: "Consultant"),
           NavigationDestination(icon: Icon(Iconsax.people), label: "Forum"),
         ],
       ),
+      body: SScreens.screens[selectedIndex],
     );
   }
+}
+
+class SScreens {
+  static final screens = [HomeScreen()];
 }
