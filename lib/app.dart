@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scentography/features/navigation/screens/navigation.dart';
 import 'package:scentography/utils/theme/theme.dart';
 
 class App extends StatelessWidget {
@@ -7,7 +8,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomePage(),
+      home: const SNavigation(),
       themeMode: ThemeMode.system,
       theme: SAppTheme.lightTheme,
       darkTheme: SAppTheme.darkTheme,
