@@ -1,0 +1,3 @@
+class SImages {
+  SImages._();
+}

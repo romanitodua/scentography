@@ -1,0 +1,5 @@
+
+
+class STexts {
+  STexts._();
+}
