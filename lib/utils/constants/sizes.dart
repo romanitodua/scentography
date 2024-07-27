@@ -1,0 +1,3 @@
+class SSizes {
+  SSizes._();
+}
