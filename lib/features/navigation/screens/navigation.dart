@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:scentography/features/forum/screens/forum_screen.dart';
 
 import '../../../app.dart';
 import '../../home_page/screens/home_screen.dart';
@@ -34,5 +35,10 @@ class SNavigation extends ConsumerWidget {
 }
 
 class SScreens {
-  static final screens = [HomeScreen()];
+  static final screens = [
+    HomeScreen(),
+    Placeholder(),
+    Placeholder(),
+    ForumScreen()
+  ];
 }

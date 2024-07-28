@@ -51,10 +51,12 @@ class HomeScreen extends ConsumerWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                child: Center(
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
                                   child: Image.network(
                                     "https://pimages.parfumo.de/720/271117_img-4789-hugo-boss-boss-alive-absolu_720.jpg",
                                     fit: BoxFit.cover,
+                                    width: double.infinity,
                                   ),
                                 ),
                               ),
