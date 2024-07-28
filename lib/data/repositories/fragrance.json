@@ -1,0 +1,24 @@
+{
+  "id": 1,
+  "brand": "brand_name",
+  "name": "fragrance_name",
+  "release_date": "2024-07-27T14:30:00.000Z",
+  "gender": "UNISEX | MAN | Woman",
+  "description": "fragrance_description",
+  "notes": [
+    "Black Poeny,Macassar Wood,Varnish"
+  ],
+  "type": {
+    "spicy": 70,
+    "sweet": 50,
+    "gourmand": 20
+  },
+  "pyramid": {
+    "top": [
+      "bergamot",
+      "mandarin orange"
+    ],
+    "middle": [],
+    "base": []
+  }
+}
