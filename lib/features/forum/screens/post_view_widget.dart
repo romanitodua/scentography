@@ -1,13 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:scentography/data/providers.dart';
+import 'package:scentography/data/repositories/firestore.dart';
 import 'package:scentography/features/forum/providers/auth_provider.dart';
 
-import '../../../data/repositories/firestore.dart';
-import '../models/comment.dart';
-import '../models/forum_post.dart';
-import 'comment_card_widget.dart';
+import '../../../domain/comment.dart';
+import '../../../domain/forum_post.dart';
 
 class FullPostView extends ConsumerStatefulWidget {
   final ForumPost post;
@@ -67,91 +66,179 @@ class _FullPostViewState extends ConsumerState<FullPostView> {
               ],
             ),
           ),
-          StreamBuilder(
-            stream: repo.getCommentsByPostId(user, widget.post.id),
-            builder: (context, AsyncSnapshot<List<Comment>> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Container();
-              }
-
-              return Expanded(
-                  child: ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  var comment = snapshot.data![index];
-                  return CommentCard(comment: comment);
-                },
-              ));
-            },
-          ),
-          Padding(
-            padding: EdgeInsets.all(8.0),
+          Expanded(child: CommentsSection(postId: widget.post.id)),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            decoration: BoxDecoration(
+              color: Theme
+                  .of(context)
+                  .colorScheme
+                  .surfaceContainerHighest,
+              borderRadius: BorderRadius.circular(16.0),
+            ),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _commentController,
                     decoration: InputDecoration(
-                      hintText: 'Add a comment...',
-                      border: OutlineInputBorder(),
+                      labelText: 'Enter your comment',
+                      border: InputBorder.none,
+                      // Remove the default underline border
+                      labelStyle: TextStyle(
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .onSurfaceVariant,
+                      ),
+                    ),
+                    maxLines: 1,
+                    style: TextStyle(
+                      color: Theme
+                          .of(context)
+                          .colorScheme
+                          .onSurface,
                     ),
                   ),
                 ),
-                IconButton(
-                  icon: Icon(Icons.send),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                      side: BorderSide.none, // Removes the outline
+                    ),
+                    padding: const EdgeInsets.all(10.0),
+                  ),
                   onPressed: () {
                     if (user == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('You must be logged in to comment.'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                      return;
+                          SnackBar(content: Text("Sign in to comment")));
+                    } else {
+                      repo.addComment(
+                          user, widget.post.id, _commentController.text);
+                      _commentController.clear();
                     }
-                    _postComment(repo, user, widget.post.id, context);
                   },
+                  child: Icon(Icons.upload, color: Colors.black),
                 ),
               ],
+            ),
+          ),
+          const SizedBox(
+            height: 6,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class CommentsSection extends ConsumerStatefulWidget {
+  final String postId;
+
+  CommentsSection({required this.postId});
+
+  @override
+  _CommentsSectionState createState() => _CommentsSectionState();
+}
+
+class _CommentsSectionState extends ConsumerState<CommentsSection> {
+  @override
+  Widget build(BuildContext context) {
+    final repo = ref.watch(fireStoreRepoProvider);
+    final user = ref.watch(authUserProvider);
+    return StreamBuilder<List<Comment>>(
+      stream: repo.getCommentsByPostId(user, widget.postId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Text('No comments yet.');
+        }
+
+        return ListView(
+          children: snapshot.data!
+              .map((comment) =>
+              CommentWidget(
+                comment: comment,
+                onLike: () {
+                  if (user==null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Sign in to comment")));
+                  }
+                  else {
+                    repo.likeComment(user,comment.id);
+                    setState(() {
+                    });
+                  }
+                },
+              ))
+              .toList(),
+        );
+      },
+    );
+  }
+}
+
+class CommentWidget extends StatefulWidget {
+  final Comment comment;
+  final Function onLike;
+
+  CommentWidget({required this.comment, required this.onLike});
+
+  @override
+  _CommentWidgetState createState() => _CommentWidgetState();
+}
+
+class _CommentWidgetState extends State<CommentWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(2.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Card(
+            child: Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.comment.author,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    widget.comment.content,
+                    softWrap: true,
+                  ),
+                  SizedBox(height: 8),
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () => widget.onLike,
+                          icon: Icon(
+                            Iconsax.heart4,
+                            color: widget.comment.isLikedByMe
+                                ? Colors.red
+                                : Colors.black,
+                          )),
+                      Text(
+                        widget.comment.likeCount.toString(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],
       ),
     );
-  }
-
-  void _postComment(FireStoreRepo repo, User user, String postId,
-      BuildContext context) async {
-    if (_commentController.text.isNotEmpty) {
-      bool delivered =
-          await repo.addComment(user, postId, _commentController.text);
-      if (delivered) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('sent'),
-              duration: Duration(seconds: 1),
-            ),
-          );
-          FocusScope.of(context).unfocus();
-        }
-
-      }
-    } else {
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('not delivered'),
-            duration: Duration(seconds: 2),
-          ),
-        );
-        FocusScope.of(context).unfocus();
-      }
-    }
-    _commentController.clear();
   }
 }

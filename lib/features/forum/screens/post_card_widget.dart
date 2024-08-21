@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scentography/features/forum/models/forum_post.dart';
+import 'package:scentography/domain/forum_post.dart';
 
 class ForumPostCard extends StatelessWidget {
   final ForumPost post;

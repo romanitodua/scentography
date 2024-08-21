@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:scentography/features/navigation/screens/navigation.dart';
 import 'package:scentography/utils/theme/theme.dart';
 
-import 'common/models/fragrance.dart';
+import 'domain/fragrance.dart';
 import 'data/providers.dart';
 import 'data/repositories/firestore.dart';
 
@@ -14,7 +14,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: const SNavigation(),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.light,
       theme: SAppTheme.lightTheme,
       darkTheme: SAppTheme.darkTheme,
     );

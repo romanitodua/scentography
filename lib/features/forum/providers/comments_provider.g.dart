@@ -6,7 +6,7 @@ part of 'comments_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$commentsHash() => r'a20261c12331094734cf17d5d207d7a0e93e2024';
+String _$commentsProviderHash() => r'7b9d9a49ad9930737954800abf09eef4d7eac98b';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,29 +29,29 @@ class _SystemHash {
   }
 }
 
-/// See also [comments].
-@ProviderFor(comments)
-const commentsProvider = CommentsFamily();
+/// See also [commentsProvider].
+@ProviderFor(commentsProvider)
+const commentsProviderProvider = CommentsProviderFamily();
 
-/// See also [comments].
-class CommentsFamily extends Family<AsyncValue<List<Comment>>> {
-  /// See also [comments].
-  const CommentsFamily();
+/// See also [commentsProvider].
+class CommentsProviderFamily extends Family<AsyncValue<List<Comment>>> {
+  /// See also [commentsProvider].
+  const CommentsProviderFamily();
 
-  /// See also [comments].
-  CommentsProvider call({
+  /// See also [commentsProvider].
+  CommentsProviderProvider call({
     User? user,
     required String postId,
   }) {
-    return CommentsProvider(
+    return CommentsProviderProvider(
       user: user,
       postId: postId,
     );
   }
 
   @override
-  CommentsProvider getProviderOverride(
-    covariant CommentsProvider provider,
+  CommentsProviderProvider getProviderOverride(
+    covariant CommentsProviderProvider provider,
   ) {
     return call(
       user: provider.user,
@@ -71,34 +71,36 @@ class CommentsFamily extends Family<AsyncValue<List<Comment>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'commentsProvider';
+  String? get name => r'commentsProviderProvider';
 }
 
-/// See also [comments].
-class CommentsProvider extends AutoDisposeStreamProvider<List<Comment>> {
-  /// See also [comments].
-  CommentsProvider({
+/// See also [commentsProvider].
+class CommentsProviderProvider
+    extends AutoDisposeStreamProvider<List<Comment>> {
+  /// See also [commentsProvider].
+  CommentsProviderProvider({
     User? user,
     required String postId,
   }) : this._internal(
-          (ref) => comments(
-            ref as CommentsRef,
+          (ref) => commentsProvider(
+            ref as CommentsProviderRef,
             user: user,
             postId: postId,
           ),
-          from: commentsProvider,
-          name: r'commentsProvider',
+          from: commentsProviderProvider,
+          name: r'commentsProviderProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$commentsHash,
-          dependencies: CommentsFamily._dependencies,
-          allTransitiveDependencies: CommentsFamily._allTransitiveDependencies,
+                  : _$commentsProviderHash,
+          dependencies: CommentsProviderFamily._dependencies,
+          allTransitiveDependencies:
+              CommentsProviderFamily._allTransitiveDependencies,
           user: user,
           postId: postId,
         );
 
-  CommentsProvider._internal(
+  CommentsProviderProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -114,12 +116,12 @@ class CommentsProvider extends AutoDisposeStreamProvider<List<Comment>> {
 
   @override
   Override overrideWith(
-    Stream<List<Comment>> Function(CommentsRef provider) create,
+    Stream<List<Comment>> Function(CommentsProviderRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: CommentsProvider._internal(
-        (ref) => create(ref as CommentsRef),
+      override: CommentsProviderProvider._internal(
+        (ref) => create(ref as CommentsProviderRef),
         from: from,
         name: null,
         dependencies: null,
@@ -133,12 +135,12 @@ class CommentsProvider extends AutoDisposeStreamProvider<List<Comment>> {
 
   @override
   AutoDisposeStreamProviderElement<List<Comment>> createElement() {
-    return _CommentsProviderElement(this);
+    return _CommentsProviderProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is CommentsProvider &&
+    return other is CommentsProviderProvider &&
         other.user == user &&
         other.postId == postId;
   }
@@ -153,7 +155,7 @@ class CommentsProvider extends AutoDisposeStreamProvider<List<Comment>> {
   }
 }
 
-mixin CommentsRef on AutoDisposeStreamProviderRef<List<Comment>> {
+mixin CommentsProviderRef on AutoDisposeStreamProviderRef<List<Comment>> {
   /// The parameter `user` of this provider.
   User? get user;
 
@@ -161,14 +163,15 @@ mixin CommentsRef on AutoDisposeStreamProviderRef<List<Comment>> {
   String get postId;
 }
 
-class _CommentsProviderElement
-    extends AutoDisposeStreamProviderElement<List<Comment>> with CommentsRef {
-  _CommentsProviderElement(super.provider);
+class _CommentsProviderProviderElement
+    extends AutoDisposeStreamProviderElement<List<Comment>>
+    with CommentsProviderRef {
+  _CommentsProviderProviderElement(super.provider);
 
   @override
-  User? get user => (origin as CommentsProvider).user;
+  User? get user => (origin as CommentsProviderProvider).user;
   @override
-  String get postId => (origin as CommentsProvider).postId;
+  String get postId => (origin as CommentsProviderProvider).postId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -39,38 +39,40 @@ class _ForumScreenState extends ConsumerState<ForumScreen> {
           )
         ],
       ),
-      body: FutureBuilder(
+      body: StreamBuilder(
+        stream: repo.getForumPosts(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Errorsdsdsds: ${snapshot.error}'));
+            return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(child: Text('No posts'));
           }
           return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                var post = snapshot.data![index];
-                return ForumPostCard(
-                  post: post,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return FullPostView(
-                            post: post,
-                          );
-                        },
-                      ),
-                    );
-                  },
-                );
-              });
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              var post = snapshot.data![index];
+              return ForumPostCard(
+                post: post,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return FullPostView(
+                          post: post,
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+          );
         },
-        future: repo.getForumPosts("posts"),
-      ),
+      )
+      ,
     );
   }
 }

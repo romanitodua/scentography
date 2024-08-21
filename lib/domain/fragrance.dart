@@ -1,15 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Fragrance {
-  final int id;  // Document ID
+  final String id; // Document ID
   final String brand;
   final String name;
   final DateTime releaseDate;
   final int gender; // 0 unisex,1-man , 2-woman
   final String description;
-  final List<String> notes;
-  final Map<String, int> type;
-  final Pyramid pyramid;
+  final List<String> top;
+  final List<String> middle;
+  final List<String> base;
+  final String image;
 
   Fragrance({
     required this.id,
@@ -18,24 +19,25 @@ class Fragrance {
     required this.releaseDate,
     required this.gender,
     required this.description,
-    required this.notes,
-    required this.type,
-    required this.pyramid,
+    required this.top,
+    required this.base,
+    required this.middle,
+    required this.image,
   });
 
   factory Fragrance.fromFirestore(DocumentSnapshot doc) {
     Map data = doc.data() as Map<String, dynamic>;
     return Fragrance(
-      id: int.parse(doc.id),
-      brand: data['brand'],
-      name: data['name'],
-      releaseDate: (data['release_date'] as Timestamp).toDate(),
-      gender: data['gender'],
-      description: data['description'],
-      notes: List<String>.from(data['notes']),
-      type: Map<String, int>.from(data['type']),
-      pyramid: Pyramid.fromMap(data['pyramid']),
-    );
+        id: doc.id,
+        brand: data['Brand'],
+        name: data['Name'],
+        releaseDate: (data['Date'] as Timestamp).toDate(),
+        gender: data['Gender'],
+        description: data['Description'],
+        top: List<String>.from(data['Top']),
+        middle: List<String>.from(data['Middle']),
+        base: List<String>.from(data['Base']),
+        image: data['Image']);
   }
 }
 
