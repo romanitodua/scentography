@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:scentography/common/models/fragrance.dart';
+import 'package:scentography/domain/fragrance.dart';
 import 'package:scentography/data/providers.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -25,7 +25,7 @@ class HomeScreen extends ConsumerWidget {
             const SizedBox(height: 16),
             Expanded(
               child: FutureBuilder<List<Fragrance>>(
-                future: repo.getTrendingFragrances("fragrance"),
+                future: repo.getTrendingFragrances(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
